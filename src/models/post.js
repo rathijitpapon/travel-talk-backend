@@ -17,24 +17,21 @@ const postSchema = new mongoose.Schema(
             type: Buffer,
         },
         loveReact: [{
-            loveReactId: {
+            reactId: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "User",
-                unique: true,
             },
         }],
         likeReact: [{
-            likeReactId: {
+            reactId: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "User",
-                unique: true,
             },
         }],
         dislikeReact: [{
-            dislikeReactId: {
+            reactId: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "User",
-                unique: true,
             },
         }],
         ownerId: {

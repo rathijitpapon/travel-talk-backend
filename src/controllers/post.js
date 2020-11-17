@@ -41,8 +41,8 @@ const getPost = async (req, res) => {
         const params = Object.keys(req.body);
         const allowedParams = ["limit", "skip"];
 
-        const isValidOperation = params.every((param) => {
-            return allowedParams.includes(param);
+        const isValidOperation = allowedParams.every((param) => {
+            return params.includes(param);
         });
 
         if(!isValidOperation) {
@@ -71,8 +71,8 @@ const editPost = async (req, res) => {
     const updates = Object.keys(req.body);
     const allowedUpdates = ["title", "description"];
 
-    const isValidOperation = updates.every((update) => {
-        return allowedUpdates.includes(update);
+    const isValidOperation = allowedUpdates.every((update) => {
+        return updates.includes(update);
     });
 
     if (!isValidOperation) {
@@ -87,7 +87,7 @@ const editPost = async (req, res) => {
             ownerId: req.user._id,
         });
 
-        updates.forEach((update) => {
+        allowedUpdates.forEach((update) => {
             post[update] = req.body[update];
         });
     
@@ -126,7 +126,6 @@ const deletePost = async (req, res) => {
 const updatePostImage = async (req, res) => {
     try {
         const buffer = await sharp(req.file.buffer)
-            .resize({ width: 256, height: 256 })
             .png()
             .toBuffer();
 
@@ -138,9 +137,8 @@ const updatePostImage = async (req, res) => {
         post.postImage = buffer;
         await post.save();
 
-        res.set("Content-Type", "image/png");
         res.status(201).send({
-            postImage: user.postImage,
+            postImage: post.postImage.toString("base64"),
         });
     } catch (error) {
         res.status(400).send({
@@ -153,9 +151,8 @@ const getPostImage = async (req, res) => {
     try {  
         const post = await Post.findById(req.params.id);
 
-        res.set("Content-Type", "image/png");
         res.status(200).send({
-            postImage: post.postImage,
+            postImage: post.postImage.toString("base64"),
         });
     } catch (error) {
         res.status(404).send({
@@ -205,22 +202,39 @@ const updateReact = async (req, res) => {
         const post = await Post.findById(req.params.id);
 
         allowedReacts.forEach((react) => {
-            const index = post[react].indexOf(req.user._id);
+            let index = -1;
+            index = post[react].findIndex(val => val.reactId.equals(req.user._id));
 
-            if(index > -1) {
+            if(index !== -1) {
                 post[react].splice(index, 1);
             }
 
-            if(reacts[react]){
-                post[react].push(req.user._id);
+            if(req.body[react]){
+                post[react].push({
+                    reactId: req.user._id,
+                });
             }
         });
 
         await post.save();
-        await post.populate({
-            path: "ownerId",
-            select: ["username", "fullname"],
-        }).execPopulate();
+        await post.populate([
+            {
+                path: "ownerId",
+                select: ["username", "fullname"],
+            },
+            {
+                path: "loveReact.reactId",
+                select: ["username", "fullname"],
+            },
+            {
+                path: "likeReact.reactId",
+                select: ["username", "fullname"],
+            },
+            {
+                path: "dislikeReact.reactId",
+                select: ["username", "fullname"],
+            }
+        ]).execPopulate();
 
         res.status(200).send(post);
     } catch (error) {

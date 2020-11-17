@@ -14,7 +14,7 @@ userRouter.get("/signout", auth, userController.signout);
 
 userRouter.get("/signout/all", auth, userController.signoutAll);
 
-userRouter.get("/profile/:id", userController.getProfile);
+userRouter.get("/profile/:id", auth, userController.getProfile);
 
 userRouter.patch("/profile", auth, userController.editProfile);
 
@@ -26,7 +26,7 @@ userRouter.get("/email", auth, userController.getEmail);
 
 userRouter.patch("/image", auth, upload.single("profileImage"), userController.updateProfileImage);
 
-userRouter.get("/image/:id", userController.getProfileImage);
+userRouter.get("/image/:id", auth, userController.getProfileImage);
 
 userRouter.delete("/image", auth, userController.deleteProfileImage);
 

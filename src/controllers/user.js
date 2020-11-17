@@ -71,9 +71,13 @@ const signoutAll = async (req, res) => {
 
 const getProfile = async (req, res) => {
     try {
-        const user = await User.find({
+        const user = await User.findOne({
             username: req.params.id,
         });
+
+        if (!user) {
+            throw new Error("");
+        }
 
         res.status(200).send(user)
     } catch (error) {
@@ -87,8 +91,8 @@ const editProfile = async (req, res) => {
     const updates = Object.keys(req.body);
     const allowedUpdates = ["fullname", "description"];
 
-    const isValidOperation = updates.every((update) => {
-        return allowedUpdates.includes(update);
+    const isValidOperation = allowedUpdates.every((update) => {
+        return updates.includes(update);
     });
 
     if (!isValidOperation) {
@@ -98,7 +102,7 @@ const editProfile = async (req, res) => {
     }
 
     try {
-        updates.forEach((update) => {
+        allowedUpdates.forEach((update) => {
             req.user[update] = req.body[update];
         });
     
@@ -157,16 +161,14 @@ const getEmail = async (req, res) => {
 const updateProfileImage = async (req, res) => {
     try {
         const buffer = await sharp(req.file.buffer)
-            .resize({ width: 256, height: 256 })
             .png()
             .toBuffer();
 
         req.user.profileImage = buffer;
         await req.user.save();
 
-        res.set("Content-Type", "image/png");
         res.status(201).send({
-            profileImage: user.profileImage,
+            profileImage: req.user.profileImage.toString("base64"),
         });
     } catch (error) {
         res.status(400).send({
@@ -177,7 +179,7 @@ const updateProfileImage = async (req, res) => {
 
 const getProfileImage = async (req, res) => {
     try {
-        const user = await User.find({
+        const user = await User.findOne({
             username: req.params.id,
         });
     
@@ -185,9 +187,8 @@ const getProfileImage = async (req, res) => {
           throw new Error("Profile image isn't found.");
         }
     
-        res.set("Content-Type", "image/png");
         res.status(200).send({
-            profileImage: user.profileImage,
+            profileImage: user.profileImage.toString("base64"),
         });
     } catch (error) {
         res.status(404).send({

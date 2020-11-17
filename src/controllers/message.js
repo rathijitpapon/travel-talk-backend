@@ -5,8 +5,8 @@ const updateMessage = async (req, res) => {
     const fields = Object.keys(req.body);
     const messageFields = ["messageText", "sender"];
 
-    const isValidOperation = fields.every((field) => {
-        return messageFields.includes(field);
+    const isValidOperation = messageFields.every((field) => {
+        return fields.includes(field);
     });
 
     if (!isValidOperation) {
@@ -16,46 +16,37 @@ const updateMessage = async (req, res) => {
     }
 
     try {
-        const receiver = await User.find({
-            username: fields.sender,
+        const receiver = await User.findOne({
+            username: req.body.sender,
         });
         const sender = req.user._id;
 
         if(!receiver) {
             throw new Error("");
         }
-        
-        let message;
 
-        await Message.findOne({
+        let message = await Message.findOne({
             user1: receiver._id,
             user2: sender._id,
-        }, 
-        async (error1, msg1) => {
-            if(error1) {
-                await Message.findOne({
-                    user1: sender._id,
-                    user2: receiver._id,
-                }, 
-                async (error2, msg2) => {
-                    if(error2) {
-                        message = new Message({
-                            user1: sender._id,
-                            user2: receiver._id,
-                            message: [],
-                        });
-                    } else {
-                        message = msg2;
-                    }
-                });
-            } else{
-                message = msg1;
-            }
         });
+
+        if(!message) {
+            message = await Message.findOne({
+                user1: sender._id,
+                user2: receiver._id,
+            });
+        }
+
+        if(!message) {
+            message = new Message({
+                user1: sender._id,
+                user2: receiver._id,
+            });
+        }
 
         message.message.push({
             sender: sender._id,
-            messageText: fields.messageText,
+            messageText: req.body.messageText,
         });
 
         await message.save();
@@ -95,36 +86,28 @@ const getMessage = async (req, res) => {
     }
 
     try {
-        const receiver = await User.find({
-            username: fields.sender,
+        const receiver = await User.findOne({
+            username: req.body.sender,
         });
         const sender = req.user._id;
         
-        let message;
-
-        await Message.findOne({
+        let message = await Message.findOne({
             user1: receiver._id,
             user2: sender._id,
-        }, 
-        async (error1, msg1) => {
-            if(error1) {
-                await Message.findOne({
-                    user1: sender._id,
-                    user2: receiver._id,
-                }, 
-                async (error2, msg2) => {
-                    if(error2) {
-                        return res.status(404).send({
-                            message: "Message isn't found.",
-                        });
-                    } else {
-                        message = msg2;
-                    }
-                });
-            } else{
-                message = msg1;
-            }
         });
+
+        if(!message) {
+            message = await Message.findOne({
+                user1: sender._id,
+                user2: receiver._id,
+            });
+        }
+
+        if(!message) {
+            return res.status(404).send({
+                message: "Message isn't found.",
+            });
+        }
 
         await message.populate([
             {

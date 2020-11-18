@@ -9,6 +9,17 @@ const signup = async (req, res) => {
         await user.save();
         const token = await user.generateAuthToken();
 
+        await user.populate([
+            {
+                path: "followers.userId",
+                select: ["username", "fullname"],
+            },
+            {
+                path: "following.userId",
+                select: ["username", "fullname"],
+            }
+        ]).execPopulate();
+
         res.status(201).send({
             user,
             token,
@@ -28,6 +39,17 @@ const signin = async (req, res) => {
             req.body.password
         );
         const token = await user.generateAuthToken();
+
+        await user.populate([
+            {
+                path: "followers.userId",
+                select: ["username", "fullname"],
+            },
+            {
+                path: "following.userId",
+                select: ["username", "fullname"],
+            }
+        ]).execPopulate();
 
         res.status(200).send({
             user,
@@ -79,6 +101,17 @@ const getProfile = async (req, res) => {
             throw new Error("");
         }
 
+        await user.populate([
+            {
+                path: "followers.userId",
+                select: ["username", "fullname"],
+            },
+            {
+                path: "following.userId",
+                select: ["username", "fullname"],
+            }
+        ]).execPopulate();
+
         res.status(200).send(user)
     } catch (error) {
         res.status(404).send({
@@ -107,6 +140,17 @@ const editProfile = async (req, res) => {
         });
     
         await req.user.save();
+        await req.user.populate([
+            {
+                path: "followers.userId",
+                select: ["username", "fullname"],
+            },
+            {
+                path: "following.userId",
+                select: ["username", "fullname"],
+            }
+        ]).execPopulate();
+
         res.status(200).send(req.user);
 
     } catch (error) {
@@ -119,6 +163,16 @@ const editProfile = async (req, res) => {
 const deleteProfile = async (req, res) => {
     try {
         await req.user.remove();
+        await req.user.populate([
+            {
+                path: "followers.userId",
+                select: ["username", "fullname"],
+            },
+            {
+                path: "following.userId",
+                select: ["username", "fullname"],
+            }
+        ]).execPopulate();
         res.status(200).send(req.user);
 
       } catch (error) {
@@ -143,6 +197,16 @@ const editPassword = async (req, res) => {
         req.user[passwordField] = req.body[passwordField];
     
         await req.user.save();
+        await req.user.populate([
+            {
+                path: "followers.userId",
+                select: ["username", "fullname"],
+            },
+            {
+                path: "following.userId",
+                select: ["username", "fullname"],
+            }
+        ]).execPopulate();
         res.status(200).send(req.user);
 
     } catch (error) {
@@ -215,6 +279,54 @@ const deleteProfileImage = async (req, res) => {
     }
 };
 
+const updateFollowUser = async (req, res) => {
+    try {
+        const followingUser = await User.findOne({
+            username: req.params.id,
+        });
+    
+        if (!followingUser) {
+          throw new Error("User isn't found.");
+        }
+
+        let index = -1;
+        index = req.user.following.findIndex(val => val.userId.equals(followingUser._id));
+
+        if(index !== -1 || req.user._id.equals(followingUser._id)) {
+            throw new Error("Following is failed.");
+        }
+
+        req.user.following.push({
+            userId: followingUser._id,
+        });
+
+        followingUser.followers.push({
+            user_id: req.user._id,
+        });
+
+        await req.user.save();
+        await followingUser.save();
+        
+        await req.user.populate([
+            {
+                path: "followers.userId",
+                select: ["username", "fullname"],
+            },
+            {
+                path: "following.userId",
+                select: ["username", "fullname"],
+            }
+        ]).execPopulate();
+
+        res.status(201).send(req.user);
+
+    } catch (error) {
+        res.status(400).send({
+            message: error.message,
+        });
+    }
+};
+
 const userController = {
     signup,
     signin,
@@ -228,6 +340,7 @@ const userController = {
     updateProfileImage,
     getProfileImage,
     deleteProfileImage,
+    updateFollowUser,
 };
 
 module.exports = userController;

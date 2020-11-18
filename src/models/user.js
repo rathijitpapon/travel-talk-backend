@@ -58,13 +58,13 @@ const userSchema = new mongoose.Schema(
             type: Buffer,
         },
         followers: [{
-            followerId: {
+            userId: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "User",
             },
         }],
         following: [{
-            followingId: {
+            userId: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "User",
             },

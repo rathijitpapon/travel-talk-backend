@@ -30,4 +30,6 @@ userRouter.get("/image/:id", auth, userController.getProfileImage);
 
 userRouter.delete("/image", auth, userController.deleteProfileImage);
 
+userRouter.patch("/follow/:id", auth, userController.updateFollowUser);
+
 module.exports = userRouter;

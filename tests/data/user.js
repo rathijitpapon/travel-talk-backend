@@ -17,4 +17,4 @@ const users = {
     userTwo,
 };
 
-export default users;
+module.exports = users;

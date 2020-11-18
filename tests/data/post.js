@@ -13,4 +13,4 @@ const posts = {
     postTwo,
 };
 
-export default posts;
+module.exports = posts;

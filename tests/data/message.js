@@ -11,4 +11,4 @@ const messages = {
     messageTwo,
 };
 
-export default messages;
+module.exports = messages;

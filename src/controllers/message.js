@@ -3,7 +3,7 @@ const User = require("../models/user");
 
 const updateMessage = async (req, res) => {
     const fields = Object.keys(req.body);
-    const messageFields = ["messageText", "sender"];
+    const messageFields = ["messageText"];
 
     const isValidOperation = messageFields.every((field) => {
         return fields.includes(field);
@@ -17,12 +17,14 @@ const updateMessage = async (req, res) => {
 
     try {
         const receiver = await User.findOne({
-            username: req.body.sender,
+            username: req.params.id,
         });
-        const sender = req.user._id;
+        const sender = req.user;
 
-        if(!receiver) {
-            throw new Error("");
+        if (!receiver) {
+            return res.status(400).send({
+                message: "Invalid update message request!",
+            });
         }
 
         let message = await Message.findOne({
@@ -74,22 +76,17 @@ const updateMessage = async (req, res) => {
 };
 
 const getMessage = async (req, res) => {
-    const fields = Object.keys(req.body);
-    const messageField = "sender";
-
-    const isValidOperation = fields.includes(messageField);
-
-    if (!isValidOperation) {
-        return res.status(400).send({
-            message: "Invalid get message request!",
-        });
-    }
-
     try {
         const receiver = await User.findOne({
-            username: req.body.sender,
+            username: req.params.id,
         });
-        const sender = req.user._id;
+        const sender = req.user;
+
+        if (!receiver) {
+            return res.status(400).send({
+                message: "Invalid get message request!",
+            });
+        }
         
         let message = await Message.findOne({
             user1: receiver._id,

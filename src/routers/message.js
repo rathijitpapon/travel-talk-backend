@@ -5,8 +5,8 @@ const messageController = require("../controllers/message");
 
 const messageRouter = express.Router();
 
-messageRouter.patch("/message", auth, messageController.updateMessage);
+messageRouter.patch("/message/:id", auth, messageController.updateMessage);
 
-messageRouter.get("/message", auth, messageController.getMessage);
+messageRouter.get("/message/:id", auth, messageController.getMessage);
 
 module.exports = messageRouter;

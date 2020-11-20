@@ -1,6 +1,7 @@
 const sharp = require("sharp");
 
 const User = require("../models/user");
+const emailNotification = require("../services/email");
 
 const signup = async (req, res) => {
     const user = new User(req.body);
@@ -20,6 +21,7 @@ const signup = async (req, res) => {
             }
         ]).execPopulate();
 
+        emailNotification.sendWelcomeEmail(user.email, user.fullname);
         res.status(201).send({
             user,
             token,
@@ -173,6 +175,8 @@ const deleteProfile = async (req, res) => {
                 select: ["username", "fullname"],
             }
         ]).execPopulate();
+
+        emailNotification.sendCancelationEmail(req.user.email, req.user.fullname);
         res.status(200).send(req.user);
 
       } catch (error) {
@@ -215,6 +219,30 @@ const editPassword = async (req, res) => {
         });
     }
 };
+
+const forgetPassword = async (req, res) => {
+    try {
+        const user = await User.findOne({
+            email: req.params.id,
+        });
+        
+        if(!user) {
+            throw new Error("Email isn't registered.");
+        }
+
+        const randomPassword = Math.random().toString(36).substring(2, 15);
+        user.password = randomPassword;
+        await user.save();
+
+        emailNotification.sendForgetPasswordEmail(user.email, user.fullname, randomPassword);
+        res.status(200).send();
+
+    } catch (error) {
+        res.status(404).send({
+            message: error.message,
+        });
+    }
+}
 
 const getEmail = async (req, res) => {
     res.status(200).send({
@@ -336,6 +364,7 @@ const userController = {
     editProfile,
     deleteProfile,
     editPassword,
+    forgetPassword,
     getEmail,
     updateProfileImage,
     getProfileImage,

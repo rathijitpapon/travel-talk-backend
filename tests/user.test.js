@@ -119,6 +119,11 @@ test('Should edit password from a signed in user', async () => {
     .expect(200);
 });
 
+test('Should forget password from user', async () => {
+    await request(app).patch(`/users/password/forget/${users.userOne.email}`).send()
+    .expect(200);
+});
+
 test('Should get email from a signed in user', async () => {
     await request(app).post('/users/signin').send({
         username: users.userOne.username,

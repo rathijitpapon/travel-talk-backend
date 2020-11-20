@@ -22,6 +22,8 @@ userRouter.delete("/profile", auth, userController.deleteProfile);
 
 userRouter.patch("/password", auth, userController.editPassword);
 
+userRouter.patch("/password/forget/:id", userController.forgetPassword);
+
 userRouter.get("/email", auth, userController.getEmail);
 
 userRouter.patch("/image", auth, upload.single("profileImage"), userController.updateProfileImage);

@@ -1,7 +1,7 @@
 const userOne = {
     "fullname": "Rathijit Paul",
     "username": "rathijit",
-    "email": "alienpapon009@gmail.com",
+    "email": "rathijitpaul@gmail.com",
     "password": "0123456789",
 };
 

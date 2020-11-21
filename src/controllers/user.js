@@ -95,9 +95,15 @@ const signoutAll = async (req, res) => {
 
 const getProfile = async (req, res) => {
     try {
-        const user = await User.findOne({
-            username: req.params.id,
-        });
+        let user;
+        if(req.params.id === "my") {
+            user = req.user;
+        }
+        else{
+            user = await User.findOne({
+                username: req.params.id,
+            });
+        }
 
         if (!user) {
             throw new Error("");

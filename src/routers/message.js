@@ -7,6 +7,6 @@ const messageRouter = express.Router();
 
 messageRouter.patch("/message/:id", auth, messageController.updateMessage);
 
-messageRouter.get("/message/:id", auth, messageController.getMessage);
+messageRouter.put("/message/:id", auth, messageController.getMessage);
 
 module.exports = messageRouter;

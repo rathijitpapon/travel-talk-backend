@@ -61,7 +61,7 @@ test('Should get post by id from a signed in user', async () => {
         title: posts.postOne.title,
     })
 
-    await request(app).get(`/posts/post/${post._id}`).send()
+    await request(app).put(`/posts/post/${post._id}`).send()
     .set("Authorization", `Bearer ${user.tokens[0].token}`)
     .expect(200);
 });
@@ -80,7 +80,7 @@ test('Should get post from a signed in user', async () => {
         title: posts.postOne.title,
     })
 
-    await request(app).get('/posts/post').send({
+    await request(app).put('/posts/post').send({
         limit: 10,
         skip: 0,
     })
@@ -163,7 +163,7 @@ test('Should get post image by id from a signed in user', async () => {
         title: posts.postOne.title,
     })
 
-    await request(app).get(`/posts/image/${post._id}`).send()
+    await request(app).put(`/posts/image/${post._id}`).send()
     .set("Authorization", `Bearer ${user.tokens[0].token}`)
     .expect(200);
 });

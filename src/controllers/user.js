@@ -13,11 +13,11 @@ const signup = async (req, res) => {
         await user.populate([
             {
                 path: "followers.userId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             },
             {
                 path: "following.userId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             }
         ]).execPopulate();
 
@@ -45,11 +45,11 @@ const signin = async (req, res) => {
         await user.populate([
             {
                 path: "followers.userId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             },
             {
                 path: "following.userId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             }
         ]).execPopulate();
 
@@ -112,11 +112,11 @@ const getProfile = async (req, res) => {
         await user.populate([
             {
                 path: "followers.userId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             },
             {
                 path: "following.userId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             }
         ]).execPopulate();
 
@@ -151,11 +151,11 @@ const editProfile = async (req, res) => {
         await req.user.populate([
             {
                 path: "followers.userId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             },
             {
                 path: "following.userId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             }
         ]).execPopulate();
 
@@ -174,11 +174,11 @@ const deleteProfile = async (req, res) => {
         await req.user.populate([
             {
                 path: "followers.userId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             },
             {
                 path: "following.userId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             }
         ]).execPopulate();
 
@@ -210,11 +210,11 @@ const editPassword = async (req, res) => {
         await req.user.populate([
             {
                 path: "followers.userId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             },
             {
                 path: "following.userId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             }
         ]).execPopulate();
         res.status(200).send(req.user);
@@ -353,11 +353,11 @@ const updateFollowUser = async (req, res) => {
         await req.user.populate([
             {
                 path: "followers.userId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             },
             {
                 path: "following.userId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             }
         ]).execPopulate();
 

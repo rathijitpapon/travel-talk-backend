@@ -55,15 +55,15 @@ const updateMessage = async (req, res) => {
         await message.populate([
             {
                 path: "user1",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             },
             {
                 path: "user2",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             },
             {
                 path: "message.sender",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             }
         ]).execPopulate();
 
@@ -109,15 +109,15 @@ const getMessage = async (req, res) => {
         await message.populate([
             {
                 path: "user1",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             },
             {
                 path: "user2",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             },
             {
                 path: "message.sender",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             }
         ]).execPopulate();
 

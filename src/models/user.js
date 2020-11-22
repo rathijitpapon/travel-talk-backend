@@ -137,7 +137,6 @@ userSchema.methods.toJSON = function () {
     delete userObject.email;
     delete userObject.password;
     delete userObject.tokens;
-    delete userObject.profileImage;
 
     return userObject;
 };

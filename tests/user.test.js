@@ -32,7 +32,7 @@ test('Should signout from a signed in user', async () => {
         username: users.userOne.username,
     });
 
-    await request(app).get('/users/signout').send()
+    await request(app).put('/users/signout').send()
     .set("Authorization", `Bearer ${user.tokens[0].token}`)
     .expect(200);
 });
@@ -47,7 +47,7 @@ test('Should signout all from a signed in user', async () => {
         username: users.userOne.username,
     });
 
-    await request(app).get('/users/signout/all').send()
+    await request(app).put('/users/signout/all').send()
     .set("Authorization", `Bearer ${user.tokens[0].token}`)
     .expect(200);
 });
@@ -62,7 +62,7 @@ test('Should get profile from any signed in user', async () => {
         username: users.userOne.username,
     });
 
-    await request(app).get(`/users/profile/${user.username}`).send()
+    await request(app).put(`/users/profile/${user.username}`).send()
     .set("Authorization", `Bearer ${user.tokens[0].token}`)
     .expect(200);
 });
@@ -134,7 +134,7 @@ test('Should get email from a signed in user', async () => {
         username: users.userOne.username,
     });
 
-    await request(app).get('/users/email').send()
+    await request(app).put('/users/email').send()
     .set("Authorization", `Bearer ${user.tokens[0].token}`)
     .expect(200);
 });
@@ -165,7 +165,7 @@ test('Should get profile image from any signed in user', async () => {
         username: users.userOne.username,
     });
 
-    await request(app).get(`/users/image/${user.username}`).send()
+    await request(app).put(`/users/image/${user.username}`).send()
     .set("Authorization", `Bearer ${user.tokens[0].token}`)
     .expect(200);
 });

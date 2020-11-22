@@ -8,7 +8,7 @@ const postRouter = require("./routers/post");
 const messageRouter = require("./routers/message");
 
 var corsOptions = {
-    origin: "http://localhost:3000"
+    origin: "*"
 };
 
 const app = express();

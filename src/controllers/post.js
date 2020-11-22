@@ -10,8 +10,27 @@ const uploadPost = async (req, res) => {
         await post.save();
         await post.populate({
             path: "ownerId",
-            select: ["username", "fullname"],
+            select: ["username", "fullname", "profileImage"],
         }).execPopulate();
+
+        await post.populate([
+            {
+                path: "ownerId",
+                select: ["username", "fullname", "profileImage"],
+            },
+            {
+                path: "loveReact.reactId",
+                select: ["username", "fullname", "profileImage"],
+            },
+            {
+                path: "likeReact.reactId",
+                select: ["username", "fullname", "profileImage"],
+            },
+            {
+                path: "dislikeReact.reactId",
+                select: ["username", "fullname", "profileImage"],
+            }
+        ]).execPopulate();
 
         res.status(201).send(post);
     } catch (error) {
@@ -25,8 +44,27 @@ const getPostById = async (req, res) => {
     try {
         const post = await Post.findById(req.params.id).populate({
             path: "ownerId",
-            select: ["username", "fullname"],
+            select: ["username", "fullname", "profileImage"],
         }).exec();
+
+        await post.populate([
+            {
+                path: "ownerId",
+                select: ["username", "fullname", "profileImage"],
+            },
+            {
+                path: "loveReact.reactId",
+                select: ["username", "fullname", "profileImage"],
+            },
+            {
+                path: "likeReact.reactId",
+                select: ["username", "fullname", "profileImage"],
+            },
+            {
+                path: "dislikeReact.reactId",
+                select: ["username", "fullname", "profileImage"],
+            }
+        ]).execPopulate();
 
         res.status(200).send(post);
     } catch (error) {
@@ -62,8 +100,25 @@ const getPost = async (req, res) => {
         .sort({createdAt: -1})
         .populate({
             path: "ownerId",
-            select: ["username", "fullname"],
-        }).exec();
+            select: ["username", "fullname", "profileImage"],
+        }).populate([
+            {
+                path: "ownerId",
+                select: ["username", "fullname", "profileImage"],
+            },
+            {
+                path: "loveReact.reactId",
+                select: ["username", "fullname", "profileImage"],
+            },
+            {
+                path: "likeReact.reactId",
+                select: ["username", "fullname", "profileImage"],
+            },
+            {
+                path: "dislikeReact.reactId",
+                select: ["username", "fullname", "profileImage"],
+            }
+        ]).exec();
 
         res.status(200).send(posts);
     } catch (error) {
@@ -100,8 +155,27 @@ const editPost = async (req, res) => {
         await post.save();
         await post.populate({
             path: "ownerId",
-            select: ["username", "fullname"],
+            select: ["username", "fullname", "profileImage"],
         }).execPopulate();
+
+        await post.populate([
+            {
+                path: "ownerId",
+                select: ["username", "fullname", "profileImage"],
+            },
+            {
+                path: "loveReact.reactId",
+                select: ["username", "fullname", "profileImage"],
+            },
+            {
+                path: "likeReact.reactId",
+                select: ["username", "fullname", "profileImage"],
+            },
+            {
+                path: "dislikeReact.reactId",
+                select: ["username", "fullname", "profileImage"],
+            }
+        ]).execPopulate();
 
         res.status(200).send(post);
 
@@ -120,6 +194,25 @@ const deletePost = async (req, res) => {
         });
 
         await post.remove();
+        await post.populate([
+            {
+                path: "ownerId",
+                select: ["username", "fullname", "profileImage"],
+            },
+            {
+                path: "loveReact.reactId",
+                select: ["username", "fullname", "profileImage"],
+            },
+            {
+                path: "likeReact.reactId",
+                select: ["username", "fullname", "profileImage"],
+            },
+            {
+                path: "dislikeReact.reactId",
+                select: ["username", "fullname", "profileImage"],
+            }
+        ]).execPopulate();
+        
         res.status(200).send(post);
 
       } catch (error) {
@@ -226,19 +319,19 @@ const updateReact = async (req, res) => {
         await post.populate([
             {
                 path: "ownerId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             },
             {
                 path: "loveReact.reactId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             },
             {
                 path: "likeReact.reactId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             },
             {
                 path: "dislikeReact.reactId",
-                select: ["username", "fullname"],
+                select: ["username", "fullname", "profileImage"],
             }
         ]).execPopulate();
 

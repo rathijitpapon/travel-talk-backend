@@ -10,11 +10,11 @@ userRouter.post("/signup", userController.signup);
 
 userRouter.post("/signin", userController.signin);
 
-userRouter.get("/signout", auth, userController.signout);
+userRouter.put("/signout", auth, userController.signout);
 
-userRouter.get("/signout/all", auth, userController.signoutAll);
+userRouter.put("/signout/all", auth, userController.signoutAll);
 
-userRouter.get("/profile/:id", auth, userController.getProfile);
+userRouter.put("/profile/:id", auth, userController.getProfile);
 
 userRouter.patch("/profile", auth, userController.editProfile);
 
@@ -24,11 +24,11 @@ userRouter.patch("/password", auth, userController.editPassword);
 
 userRouter.patch("/password/forget/:id", userController.forgetPassword);
 
-userRouter.get("/email", auth, userController.getEmail);
+userRouter.put("/email", auth, userController.getEmail);
 
 userRouter.patch("/image", auth, upload.single("profileImage"), userController.updateProfileImage);
 
-userRouter.get("/image/:id", auth, userController.getProfileImage);
+userRouter.put("/image/:id", auth, userController.getProfileImage);
 
 userRouter.delete("/image", auth, userController.deleteProfileImage);
 

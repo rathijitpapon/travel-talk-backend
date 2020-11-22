@@ -57,7 +57,7 @@ test('Should get message of user 2 from a signed in user 1 ', async () => {
         username: users.userOne.username,
     });
 
-    await request(app).get(`/messages/message/${users.userTwo.username}`).send()
+    await request(app).put(`/messages/message/${users.userTwo.username}`).send()
     .set("Authorization", `Bearer ${user.tokens[0].token}`)
     .expect(200);
 });

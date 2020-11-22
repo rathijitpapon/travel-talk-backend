@@ -326,17 +326,26 @@ const updateFollowUser = async (req, res) => {
         let index = -1;
         index = req.user.following.findIndex(val => val.userId.equals(followingUser._id));
 
-        if(index !== -1 || req.user._id.equals(followingUser._id)) {
+        if(req.user._id.equals(followingUser._id)) {
             throw new Error("Following is failed.");
         }
+        else if(index !== -1) {
+            req.user.following.splice(index, 1);
 
-        req.user.following.push({
-            userId: followingUser._id,
-        });
+            index = followingUser.followers.findIndex(val => val.userId.equals(req.user._id));
+            if(index !== -1) {
+                followingUser.followers.splice(index, 1);
+            }
+        }
+        else {
+            req.user.following.push({
+                userId: followingUser._id,
+            });
 
-        followingUser.followers.push({
-            user_id: req.user._id,
-        });
+            followingUser.followers.push({
+                userId: req.user._id,
+            });
+        }
 
         await req.user.save();
         await followingUser.save();

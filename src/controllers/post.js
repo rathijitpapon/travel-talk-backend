@@ -39,7 +39,7 @@ const getPostById = async (req, res) => {
 const getPost = async (req, res) => {
     try {
         const params = Object.keys(req.body);
-        const allowedParams = ["limit", "skip"];
+        const allowedParams = ["limit", "skip", "usertype"];
 
         const isValidOperation = allowedParams.every((param) => {
             return params.includes(param);
@@ -51,10 +51,16 @@ const getPost = async (req, res) => {
             });
         }
 
-        const posts = await Post.find({
-            skip: params.skip,
-            limit: params.limit,
-        }).populate({
+        let query = {};
+        if(req.body.usertype === "user") {
+            query = {ownerId: req.user._id}
+        }
+
+        const posts = await Post.find(query)
+        .skip(req.body.skip)
+        .limit(req.body.limit)
+        .sort({createdAt: -1})
+        .populate({
             path: "ownerId",
             select: ["username", "fullname"],
         }).exec();

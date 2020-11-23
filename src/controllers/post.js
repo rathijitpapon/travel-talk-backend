@@ -1,6 +1,7 @@
 const sharp = require("sharp");
 
 const Post = require("../models/post");
+const User = require("../models/user");
 
 const uploadPost = async (req, res) => {
     const post = new Post(req.body);
@@ -90,8 +91,15 @@ const getPost = async (req, res) => {
         }
 
         let query = {};
-        if(req.body.usertype === "user") {
-            query = {ownerId: req.user._id}
+        if(req.body.usertype !== "all") {
+            const user = await User.findOne({
+                username: req.body.usertype,
+            });
+            
+            if(!user) {
+                throw new Error("");
+            }
+            query = {ownerId: user._id}
         }
 
         const posts = await Post.find(query)

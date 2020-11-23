@@ -14,7 +14,7 @@ const postSchema = new mongoose.Schema(
             trim: true,
         },
         postImage: {
-            type: Buffer,
+            type: String,
         },
         loveReact: [{
             reactId: {

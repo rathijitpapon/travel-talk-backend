@@ -16,7 +16,7 @@ postRouter.patch("/post/:id", auth, postController.editPost);
 
 postRouter.delete("/post/:id", auth, postController.deletePost);
 
-postRouter.patch("/image/:id", auth, upload.single("postImage"), postController.updatePostImage);
+postRouter.patch("/image/:id", auth, postController.updatePostImage);
 
 postRouter.put("/image/:id", auth, postController.getPostImage);
 

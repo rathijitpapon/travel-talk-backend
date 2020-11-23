@@ -55,7 +55,7 @@ const userSchema = new mongoose.Schema(
             maxlength: 300,
         },
         profileImage: {
-            type: Buffer,
+            type: String,
         },
         followers: [{
             userId: {

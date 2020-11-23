@@ -224,9 +224,11 @@ const deletePost = async (req, res) => {
 
 const updatePostImage = async (req, res) => {
     try {
-        const buffer = await sharp(req.file.buffer)
-            .png()
-            .toBuffer();
+        if(!Object.keys(req.body).includes("postImage")){
+            throw new Error("");
+        }
+        
+        const buffer = req.body.postImage;
 
         const post = await Post.findOne({
             _id: req.params.id,

@@ -258,9 +258,11 @@ const getEmail = async (req, res) => {
 
 const updateProfileImage = async (req, res) => {
     try {
-        const buffer = await sharp(req.file.buffer)
-            .png()
-            .toBuffer();
+        if(!Object.keys(req.body).includes("profileImage")){
+            throw new Error("");
+        }
+        
+        const buffer = req.body.profileImage;
 
         req.user.profileImage = buffer;
         await req.user.save();

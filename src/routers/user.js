@@ -26,7 +26,7 @@ userRouter.patch("/password/forget/:id", userController.forgetPassword);
 
 userRouter.put("/email", auth, userController.getEmail);
 
-userRouter.patch("/image", auth, upload.single("profileImage"), userController.updateProfileImage);
+userRouter.patch("/image", auth, userController.updateProfileImage);
 
 userRouter.put("/image/:id", auth, userController.getProfileImage);
 

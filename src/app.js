@@ -10,7 +10,7 @@ const postRouter = require("./routers/post");
 const messageRouter = require("./routers/message");
 
 var corsOptions = {
-    origin: "*"
+    origin: "https://traveltalkcommunity.herokuapp.com"
 };
 
 const app = express();
@@ -36,7 +36,7 @@ app.use("/messages", messageRouter);
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', 'https://traveltalkcommunity.herokuapp.com');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');

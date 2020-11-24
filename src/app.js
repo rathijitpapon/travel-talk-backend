@@ -10,14 +10,14 @@ const postRouter = require("./routers/post");
 const messageRouter = require("./routers/message");
 
 var corsOptions = {
-    origin: "*"
+    origin: "https://traveltalkcommunity.herokuapp.com"
 };
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server, {
     cors: {
-        origin: "*",
+        origin: "https://traveltalkcommunity.herokuapp.com",
         methods: ["GET", "POST"],
     }
 });

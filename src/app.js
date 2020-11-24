@@ -16,16 +16,9 @@ var corsOptions = {
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server, , {
-    origins: ["*"],
-
-    handlePreflightRequest: (req, res) => {
-        res.writeHead(200, {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,POST",
-        "Access-Control-Allow-Headers": "my-custom-header",
-        "Access-Control-Allow-Credentials": true
-        });
-        res.end();
+    cors: {
+        origin: "https://traveltalkcommunity.herokuapp.com",
+        methods: ["GET", "POST"],
     }
 });
 

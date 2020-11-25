@@ -1,6 +1,7 @@
 # Travel Talk Backend
 
 This is one of my portfolio projects. Here I build a social platform for the travellers worldwide where they travellers can share their travel experiences.
+Here is the backend code base this web app.
 
 Visit this web app at [Travel Talk](https://traveltalkcommunity.herokuapp.com/)
 

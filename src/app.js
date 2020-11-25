@@ -28,12 +28,12 @@ app.use(express.json({limit: '100mb'}));
 app.use(express.urlencoded({limit: '100mb', extended: true}));
 app.use(cors(corsOptions));
 
-const server = http.createServer(app);
-const io = socketio(server);
-
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
 app.use("/messages", messageRouter);
+
+const server = http.createServer(app);
+const io = socketio(server);
 
 const auth = async (token) => {
     const jwt = require("jsonwebtoken");

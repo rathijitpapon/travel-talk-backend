@@ -9,39 +9,20 @@ const userRouter = require("./routers/user");
 const postRouter = require("./routers/post");
 const messageRouter = require("./routers/message");
 
-var corsOptions = {
-    origin: "*"
-};
+// var corsOptions = {
+//     origin: "*"
+// };
 
 const app = express();
 app.use(function (req, res, next) {
-
-    // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', '*');
 
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
-
-    // Pass to next layer of middleware
     next();
 });
 
 
 const server = http.createServer(app);
-const io = socketio(server, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"],
-        credentials: true,
-    }
-});
+const io = socketio(server);
 
 initDB();
 
@@ -49,7 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));  
 app.use(express.json({limit: '100mb'}));
 app.use(express.urlencoded({limit: '100mb', extended: true}));
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use("/users", userRouter);
 app.use("/posts", postRouter);

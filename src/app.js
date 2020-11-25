@@ -10,7 +10,7 @@ const postRouter = require("./routers/post");
 const messageRouter = require("./routers/message");
 
 var corsOptions = {
-    origin: "https://traveltalkcommunity.herokuapp.com/",
+    origin: "https://traveltalkcommunity.herokuapp.com",
 };
 
 const app = express();

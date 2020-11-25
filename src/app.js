@@ -14,11 +14,11 @@ var corsOptions = {
 };
 
 const app = express();
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+// app.use(function (req, res, next) {
+//     res.setHeader('Access-Control-Allow-Origin', '*');
 
-    next();
-});
+//     next();
+// });
 
 
 const server = http.createServer(app);

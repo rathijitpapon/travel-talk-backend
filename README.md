@@ -13,4 +13,5 @@ Visit this web app at [Travel Talk](https://traveltalkcommunity.herokuapp.com/)
   4. Mongoose
   5. Websocket
   6. Socket.io
-  7. Jest
+  7. REST API
+  8. Jest

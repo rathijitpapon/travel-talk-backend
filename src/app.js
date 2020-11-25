@@ -14,11 +14,10 @@ var corsOptions = {
 };
 
 const app = express();
-// app.use(function (req, res, next) {
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-
-//     next();
-// });
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
 
 initDB();
 

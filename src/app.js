@@ -10,7 +10,7 @@ const postRouter = require("./routers/post");
 const messageRouter = require("./routers/message");
 
 var corsOptions = {
-    origin: "https://traveltalkcommunity.herokuapp.com",
+    origin: "*",
 };
 
 const app = express();
@@ -20,10 +20,6 @@ const app = express();
 //     next();
 // });
 
-
-const server = http.createServer(app);
-const io = socketio(server);
-
 initDB();
 
 app.use(express.json());
@@ -31,6 +27,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json({limit: '100mb'}));
 app.use(express.urlencoded({limit: '100mb', extended: true}));
 app.use(cors(corsOptions));
+
+const server = http.createServer(app);
+const io = socketio(server);
 
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
